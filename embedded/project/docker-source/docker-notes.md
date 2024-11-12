@@ -5,8 +5,10 @@
 ```
 export DOCKER_SOURCE=../../docker-source
 export HOST_VOLUMES=../../volumes
+
 export DB_TEST_USERNAME=root
 export DB_TEST_PASSWORD=yourpassword
+
 # export RELEASE_MODE=development
 export RELEASE_MODE=public
 ```

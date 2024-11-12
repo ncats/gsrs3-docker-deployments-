@@ -3,9 +3,12 @@
 ## Terminal Environment
 
 ```
-DOCKER_SOURCE=../../docker-source
-HOST_VOLUMES=../../volumes
-RELEASE_MODE=public
+export DOCKER_SOURCE=../../docker-source
+export HOST_VOLUMES=../../volumes
+export DB_TEST_USERNAME=root
+export DB_TEST_PASSWORD=yourpassword
+# export RELEASE_MODE=development
+export RELEASE_MODE=public
 ```
 
 ## GSRS-CI
@@ -14,9 +17,19 @@ Below gsrs-ci refers to the deployments folder used by FDA. but you may use any 
 
 ## Running the containers
 
+First you'll need to build your images (see below)
+
 ```
 cd gsrs-ci
 docker-compose -f ../docker-source/docker-compose.yml up postgresql frontend gateway substances clinical-trials 
+```
+
+## Check environment variables
+
+See if environment variables are interpolated as expected.
+
+```
+docker-compose -f ../docker-source/docker-compose.yml config
 ```
 
 ## Building images

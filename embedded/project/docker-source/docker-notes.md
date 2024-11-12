@@ -82,18 +82,22 @@ docker build -f $DOCKER_SOURCE/ssg4m/Dockerfile --no-cache --progress=plain --bu
 
 Before committing to Git, clean up folders from test instances
 
+```
 rm -r ./volumes/app-data/adverse-events/ginas.ix
 rm -r ./volumes/app-data/applications/ginas.ix
 rm -r ./volumes/app-data/clinical-trials/ginas.ix
 rm -r ./volumes/app-data/impurities/ginas.ix
 rm -r ./volumes/app-data/invitro-pharmacology/ginas.ix
 rm -r ./volumes/app-data/substances/ginas.ix
+```
 
 ## Wipe databases
 
+```
 rm -r ./volumes/app-data/db/mariadb/info && mkdir -p ./volumes/app-data/db/mariadb/info
 rm -r ./volumes/app-data/db/postgresql/info && mkdir -p ./volumes/app-data/db/postgresql/info
 rm -r ./volumes/app-data/db/mysql/info && mkdir -p ./volumes/app-data/db/mysql/info
+```
 
 ## Find more files to exclude from commits or clean up
 
@@ -102,6 +106,7 @@ find . -type f  | grep -v app-data/db | grep -v 'frontend/classes'  | grep -v gs
 ```
 
 # Backup configuration files
+
 ```
 tar -cvzf flavor.env-db.conf.tar.gz  $(find volumes -type f -name  "*env-db.conf")
 tar -cvzf backup.all.conf.tar.gz  $(find volumes -name conf -type d) 

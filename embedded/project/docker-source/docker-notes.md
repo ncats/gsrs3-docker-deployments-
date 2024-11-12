@@ -11,9 +11,17 @@ export DB_TEST_PASSWORD=yourpassword
 export RELEASE_MODE=public
 ```
 
-## GSRS-CI
 
-Below gsrs-ci refers to the deployments folder used by FDA. but you may use any similar deployment repository such as gsrs3-main-deployment.  
+## gsrs-ci
+
+Below gsrs-ci refers to the deployments folder used by FDA. but you may use any similar deployment repository such as gsrs-example-deployment, or gsrs3-main-deployment.  
+
+## Clone gsrs-ci
+
+```
+# Temporarily clone your gsrs-ci repo here
+cd gsrs3-docker-deployments/projects
+```
 
 ## Running the containers
 

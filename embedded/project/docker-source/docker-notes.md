@@ -13,6 +13,10 @@ export DB_TEST_PASSWORD=yourpassword
 export RELEASE_MODE=public
 ```
 
+## Purpose
+
+This Docker recipe is mainly meant for local testing and also to provide an introduction to using Docker with GSRS. 
+
 
 ## gsrs-ci
 
@@ -31,6 +35,8 @@ First you'll need to build your images (see below)
 
 ```
 cd gsrs-ci
+# use ONE of (postgresql, mariadb, mysql) database flavors.
+# The docker-compose.yml file should require one of these but does not yet do so.
 docker-compose -f ../docker-source/docker-compose.yml up postgresql frontend gateway substances clinical-trials 
 ```
 

@@ -101,6 +101,12 @@ rm -r ./volumes/app-data/db/mysql/info && mkdir -p ./volumes/app-data/db/mysql/i
 find . -type f  | grep -v app-data/db | grep -v 'frontend/classes'  | grep -v gsrs-ci
 ```
 
+# Backup init.sql scripts 
+
+```
+tar -cvzf db.init.sql.tar.gz  $(find volumes -name init -type d)
+```
+
 # Backup configuration files
 ```
 tar -cvzf flavor.env-db.conf.tar.gz  $(find volumes -type f -name  "*env-db.conf")

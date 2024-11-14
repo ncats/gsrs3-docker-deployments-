@@ -13,6 +13,10 @@ export DB_TEST_PASSWORD=yourpassword
 export RELEASE_MODE=public
 ```
 
+## Purpose
+
+This Docker recipe is mainly meant for local testing and also to provide an introduction to using Docker with GSRS. 
+
 
 ## gsrs-ci
 
@@ -31,6 +35,8 @@ First you'll need to build your images (see below)
 
 ```
 cd gsrs-ci
+# use ONE of (postgresql, mariadb, mysql) database flavors.
+# The docker-compose.yml file should require one of these but does not yet do so.
 docker-compose -f ../docker-source/docker-compose.yml up postgresql frontend gateway substances clinical-trials 
 ```
 
@@ -82,18 +88,22 @@ docker build -f $DOCKER_SOURCE/ssg4m/Dockerfile --no-cache --progress=plain --bu
 
 Before committing to Git, clean up folders from test instances
 
+```
 rm -r ./volumes/app-data/adverse-events/ginas.ix
 rm -r ./volumes/app-data/applications/ginas.ix
 rm -r ./volumes/app-data/clinical-trials/ginas.ix
 rm -r ./volumes/app-data/impurities/ginas.ix
 rm -r ./volumes/app-data/invitro-pharmacology/ginas.ix
 rm -r ./volumes/app-data/substances/ginas.ix
+```
 
 ## Wipe databases
 
+```
 rm -r ./volumes/app-data/db/mariadb/info && mkdir -p ./volumes/app-data/db/mariadb/info
 rm -r ./volumes/app-data/db/postgresql/info && mkdir -p ./volumes/app-data/db/postgresql/info
 rm -r ./volumes/app-data/db/mysql/info && mkdir -p ./volumes/app-data/db/mysql/info
+```
 
 ## Find more files to exclude from commits or clean up
 
@@ -108,6 +118,7 @@ tar -cvzf db.init.sql.tar.gz  $(find volumes -name init -type d)
 ```
 
 # Backup configuration files
+
 ```
 tar -cvzf flavor.env-db.conf.tar.gz  $(find volumes -type f -name  "*env-db.conf")
 tar -cvzf backup.all.conf.tar.gz  $(find volumes -name conf -type d) 

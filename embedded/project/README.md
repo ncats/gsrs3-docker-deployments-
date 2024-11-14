@@ -1,8 +1,5 @@
 
-# Docker GSRS embedded deployments 
+# Notes:  
 
-This docker recipe is meant to help with testing.
+[./docker-source/docker-notes.md](./docker-source/docker-notes.md)
 
-For more information: 
-
-(project/docker-source/docker-notes.md)[project/docker-source/docker-notes.md]

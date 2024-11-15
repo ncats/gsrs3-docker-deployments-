@@ -50,9 +50,13 @@ docker-compose -f ../docker-source/docker-compose.yml config
 
 ## Building images
 
-You may want to run with `--build-arg RELEASE_MODE=$RELEASE_MODE`
-
 ```
+# Run these in gsrs-ci/<service>
+
+# You may want to run with --build-arg RELEASE_MODE=$RELEASE_MODE
+
+# ==== 
+
 # substances
 docker build -f $DOCKER_SOURCE/substances/Dockerfile --no-cache --progress=plain  --build-arg BUILD_VERSION=v2023.0714.1 -t  gsrs3/gsrs-emb-docker-substances:0.0.1-SNAPSHOT .
 

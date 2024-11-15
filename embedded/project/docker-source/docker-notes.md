@@ -88,6 +88,15 @@ docker build -f $DOCKER_SOURCE/products/Dockerfile --no-cache --progress=plain -
 docker build -f $DOCKER_SOURCE/ssg4m/Dockerfile --no-cache --progress=plain --build-arg BUILD_VERSION=v2023.0714.1 -t  gsrs3/gsrs-emb-docker-ssg4m:0.0.1-SNAPSHOT .
 ```
 
+## Create/reset database init.sql files
+
+```
+# Volumes/db/<flavor>/init folder
+cd project 
+tar -xvzf db.init.sql.tar.gz
+
+```
+
 ## Clean up indexes
 
 Before committing to Git, clean up folders from test instances

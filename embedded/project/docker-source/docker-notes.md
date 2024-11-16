@@ -11,6 +11,9 @@ export DB_TEST_PASSWORD=yourpassword
 
 # export RELEASE_MODE=development
 export RELEASE_MODE=public
+
+export BUILD_VERSION=v2024.1115.1
+
 ```
 
 ## Purpose
@@ -34,10 +37,42 @@ cd gsrs3-docker-deployments/projects
 First you'll need to build your images (see below)
 
 ```
-cd gsrs-ci
 # use ONE of (postgresql, mariadb, mysql) database flavors.
 # The docker-compose.yml file should require one of these but does not yet do so.
-docker-compose -f ../docker-source/docker-compose.yml up postgresql frontend gateway substances clinical-trials 
+# If you need to use sudo, put the sudo before the db credentials.
+
+cd gsrs-ci
+
+export DATABASE=postgresql 
+sudo \
+DB_TEST_USERNAME=root DB_TEST_PASSWORD=yourpassword \
+docker-compose -f ../docker-source/docker-compose.yml up \
+$DATABASE frontend gateway substances products
+```
+
+## Available services
+
+```
+adverse-events  ?
+applications
+discovery
+frontend
+gateway 
+clinical-trials
+impurities
+invitro-pharmacology
+substances
+ssg4m
+
+# Most entity services, depend on the substances service for full fuctionality. 
+# Discovery isn't used in practice, yet.
+```
+
+## Pick one database service
+```
+mariadb 
+mysql 
+postgresql
 ```
 
 ## Check environment variables
@@ -45,7 +80,11 @@ docker-compose -f ../docker-source/docker-compose.yml up postgresql frontend gat
 See if environment variables are interpolated as expected.
 
 ```
-docker-compose -f ../docker-source/docker-compose.yml config
+export DATABASE=postgresql 
+sudo \
+DB_TEST_USERNAME=root DB_TEST_PASSWORD=yourpassword \
+docker-compose -f ../docker-source/docker-compose.yml up \
+config
 ```
 
 ## Building images
@@ -57,35 +96,50 @@ docker-compose -f ../docker-source/docker-compose.yml config
 
 # ==== 
 
-# substances
-docker build -f $DOCKER_SOURCE/substances/Dockerfile --no-cache --progress=plain  --build-arg BUILD_VERSION=v2023.0714.1 -t  gsrs3/gsrs-emb-docker-substances:0.0.1-SNAPSHOT .
+export DOCKER_SOURCE=../../docker-source
 
-# gateway
-docker build -f $DOCKER_SOURCE/gateway/Dockerfile --no-cache --progress=plain --build-arg BUILD_VERSION=v2023.0714.1 -t  gsrs3/gsrs-emb-docker-gateway:0.0.1-SNAPSHOT .
+cd gsrs-ci
 
-# frontend
-docker build -f $DOCKER_SOURCE/frontend/Dockerfile --no-cache --progress=plain --build-arg BUILD_VERSION=v2023.0714.1 -t  gsrs3/gsrs-emb-docker-frontend:0.0.1-SNAPSHOT .
+cd substances
+docker build -f $DOCKER_SOURCE/substances/Dockerfile --no-cache --progress=plain  --build-arg BUILD_VERSION=$BUILD_VERSION -t gsrs3/gsrs-emb-docker-substances:0.0.1-SNAPSHOT .
 
-# adverse-events
-docker build -f $DOCKER_SOURCE/adverse-events/Dockerfile --no-cache --progress=plain --build-arg BUILD_VERSION=v2023.0714.1 -t  gsrs3/gsrs-emb-docker-adverse-events:0.0.1-SNAPSHOT .
+cd ..
+cd gateway
+docker build -f $DOCKER_SOURCE/gateway/Dockerfile --no-cache --progress=plain --build-arg BUILD_VERSION=$BUILD_VERSION -t gsrs3/gsrs-emb-docker-gateway:0.0.1-SNAPSHOT .
 
-# applications
-docker build -f $DOCKER_SOURCE/applications/Dockerfile --no-cache --progress=plain --build-arg BUILD_VERSION=v2023.0714.1 -t  gsrs3/gsrs-emb-docker-applications:0.0.1-SNAPSHOT .
+cd ..
+cd frontend
+export FRONTEND_TAG='development_3.0'
+# export FRONTEND_TAG='GSRSv3.1.1PUB'
+docker build -f $DOCKER_SOURCE/frontend/Dockerfile --no-cache --progress=plain --build-arg BUILD_VERSION=$BUILD_VERSION -t gsrs3/gsrs-emb-docker-frontend:0.0.1-SNAPSHOT .
 
-# clinical-trials
-docker build -f $DOCKER_SOURCE/clinical-trials/Dockerfile --no-cache --progress=plain --build-arg BUILD_VERSION=v2023.0714.1 -t  gsrs3/gsrs-emb-docker-clinical-trials:0.0.1-SNAPSHOT .
+cd ..
+cd adverse-events
+docker build -f $DOCKER_SOURCE/adverse-events/Dockerfile --no-cache --progress=plain --build-arg BUILD_VERSION=$BUILD_VERSION -t gsrs3/gsrs-emb-docker-adverse-events:0.0.1-SNAPSHOT .
 
-# impurities
-docker build -f $DOCKER_SOURCE/impurities/Dockerfile --no-cache --progress=plain --build-arg BUILD_VERSION=v2023.0714.1 -t  gsrs3/gsrs-emb-docker-impurities:0.0.1-SNAPSHOT .
+cd ..
+cd applications
+docker build -f $DOCKER_SOURCE/applications/Dockerfile --no-cache --progress=plain --build-arg BUILD_VERSION=$BUILD_VERSION -t gsrs3/gsrs-emb-docker-applications:0.0.1-SNAPSHOT .
 
-# invitro
-docker build -f $DOCKER_SOURCE/invitro-pharmacology/Dockerfile --no-cache --progress=plain --build-arg BUILD_VERSION=v2023.0714.1 -t  gsrs3/gsrs-emb-docker-invitro-pharmacology:0.0.1-SNAPSHOT .
+cd ..
+cd clinical-trials
+docker build -f $DOCKER_SOURCE/clinical-trials/Dockerfile --no-cache --progress=plain --build-arg BUILD_VERSION=$BUILD_VERSION -t gsrs3/gsrs-emb-docker-clinical-trials:0.0.1-SNAPSHOT .
 
-# products
-docker build -f $DOCKER_SOURCE/products/Dockerfile --no-cache --progress=plain --build-arg BUILD_VERSION=v2023.0714.1 -t  gsrs3/gsrs-emb-docker-products:0.0.1-SNAPSHOT .
+cd ..
+cd impurities
+docker build -f $DOCKER_SOURCE/impurities/Dockerfile --no-cache --progress=plain --build-arg BUILD_VERSION=$BUILD_VERSION -t gsrs3/gsrs-emb-docker-impurities:0.0.1-SNAPSHOT .
 
-# ssg4m
-docker build -f $DOCKER_SOURCE/ssg4m/Dockerfile --no-cache --progress=plain --build-arg BUILD_VERSION=v2023.0714.1 -t  gsrs3/gsrs-emb-docker-ssg4m:0.0.1-SNAPSHOT .
+cd ..
+cd invitro-pharmacology
+docker build -f $DOCKER_SOURCE/invitro-pharmacology/Dockerfile --no-cache --progress=plain --build-arg BUILD_VERSION=$BUILD_VERSION -t gsrs3/gsrs-emb-docker-invitro-pharmacology:0.0.1-SNAPSHOT .
+
+cd ..
+cd products
+docker build -f $DOCKER_SOURCE/products/Dockerfile --no-cache --progress=plain --build-arg BUILD_VERSION=$BUILD_VERSION -t gsrs3/gsrs-emb-docker-products:0.0.1-SNAPSHOT .
+
+cd ..
+cd ssg4m
+docker build -f $DOCKER_SOURCE/ssg4m/Dockerfile --no-cache --progress=plain --build-arg BUILD_VERSION=$BUILD_VERSION -t gsrs3/gsrs-emb-docker-ssg4m:0.0.1-SNAPSHOT .
 ```
 
 ## Create/reset database init.sql files

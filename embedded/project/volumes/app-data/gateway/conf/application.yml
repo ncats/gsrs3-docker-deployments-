@@ -18,7 +18,7 @@ spring:
   application:
     name: gateway
 
-debug: true
+debug: ${DEBUG:false}
 
 zuul:
   #this sets sensitiveHeaders to empty list so cookies and auth headers are passed through both ways

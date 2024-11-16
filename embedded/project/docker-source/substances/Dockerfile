@@ -1,5 +1,5 @@
 # Docker mvn build
-FROM maven:3.6.3-jdk-11 as build
+FROM maven:3.6.3-jdk-11 AS build
 # public|development
 ARG RELEASE_MODE='public'
 ARG STARTER_MODULE_BRANCH=master
